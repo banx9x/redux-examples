@@ -26,11 +26,6 @@ axios@^0.24.0:
   dependencies:
     follow-redirects "^1.14.4"
 
-clsx@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
-  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
-
 esbuild-android-arm64@0.13.15:
   version "0.13.15"
   resolved "https://registry.yarnpkg.com/esbuild-android-arm64/-/esbuild-android-arm64-0.13.15.tgz#3fc3ff0bab76fe35dd237476b5d2b32bb20a3d44"
@@ -197,13 +192,6 @@ postcss@^8.3.8:
     picocolors "^1.0.0"
     source-map-js "^1.0.1"
 
-react-toastify@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-8.1.0.tgz#acaca4e8c4415c8474562dd84a14e6f390ed7f17"
-  integrity sha512-M+Q3rTmEw/53Csr7NsV/YnldJe4c7uERcY7Tma9mvLU98QT2VhIkKwjBzzxZkJRk/oBKyUAtkyMjMgO00hx6gQ==
-  dependencies:
-    clsx "^1.1.1"
-
 redux-thunk@^2.3.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.4.0.tgz#ac89e1d6b9bdb9ee49ce69a69071be41bbd82d67"
@@ -245,11 +233,6 @@ source-map-js@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.1.tgz#a1741c131e3c77d048252adfa24e23b908670caf"
   integrity sha512-4+TN2b3tqOCd/kaGRJ/sTYA0tR0mdXx26ipdolxcwtJVqEnqNYvlCAt1q3ypy4QMlYus+Zh34RNtYLoq2oQ4IA==
-
-vanilla-toast@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/vanilla-toast/-/vanilla-toast-0.5.0.tgz#2496f4c12eaf8755d26db5a4f0c38e948d42870d"
-  integrity sha512-CjSSW86L3gkTWAQmcPtszu+b+4HZZRrBelNGCukvHh5Km8Hij8mjH6vY1hOB8MqGV5TMTuzHsXoqfURDLC1tdQ==
 
 vite@^2.6.4:
   version "2.6.14"

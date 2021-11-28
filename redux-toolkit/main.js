@@ -5,20 +5,12 @@ import {
     decrementBy,
     unusedAction,
 } from "./slices/counter.slice";
-import {
-    clear,
-    addItem,
-    removeItem,
-    selectTotal,
-    incrementQuantity,
-    decrementQuantity,
-    setQuantity,
-} from "./slices/cart.slice";
+import * as cart from "./slices/cart.slice";
 import { getTasks, createTask } from "./slices/todo.slice";
 import store from "./store";
 import { unwrapResult } from "@reduxjs/toolkit";
 
-// tự động thêm default case
+// Tự động thêm default case
 store.dispatch(unusedAction());
 
 store.dispatch(increment());
@@ -33,72 +25,55 @@ store.dispatch(decrement());
 store.dispatch(decrementBy(1));
 store.dispatch(decrementBy(2));
 
-store.dispatch(
-    addItem({ productId: 1, productName: "Macbook", quantity: 1, price: 1299 })
-);
-console.log("Cart:", selectTotal(store.getState()));
+store.dispatch(cart.addItem(1));
+store.dispatch(cart.addItem(2));
 
-store.dispatch(
-    addItem({ productId: 2, productName: "Airpod", quantity: 2, price: 199 })
-);
-console.log("Cart:", selectTotal(store.getState()));
+store.dispatch(cart.addItem(1)); // Đã có, qty = 2
 
-store.dispatch(removeItem({ productId: 1 }));
-console.log("Cart:", selectTotal(store.getState()));
+store.dispatch(cart.increment(1)); // qty = 3
 
-store.dispatch(incrementQuantity({ productId: 2 }));
-console.log("Cart:", selectTotal(store.getState()));
+store.dispatch(cart.decrement(1)); // qty = 2
+store.dispatch(cart.decrement(1)); // qty = 1
+store.dispatch(cart.decrement(1)); // qty vẫn bằng 1
 
-store.dispatch(decrementQuantity({ productId: 2 }));
-console.log("Cart:", selectTotal(store.getState()));
+store.dispatch(cart.removeItem(2));
 
-store.dispatch(decrementQuantity({ productId: 2 }));
-console.log("Cart:", selectTotal(store.getState()));
+store.dispatch(cart.incrementByAmount({ pid: 1, amount: 2 })); // qty = 3
+store.dispatch(cart.addItem(2));
+store.dispatch(cart.addItem(6));
 
-store.dispatch(decrementQuantity({ productId: 2 }));
-console.log("Cart:", selectTotal(store.getState()));
+const items = cart.selectItems(store.getState());
+const totalItems = cart.selectTotalItems(store.getState());
+const subTotal = cart.selectSubTotal(store.getState());
+const tax = cart.selectTax(store.getState());
+const total = cart.selectTotal(store.getState());
 
-store.dispatch(
-    addItem({ productId: 1, productName: "Macbook", quantity: 1, price: 1299 })
-);
-console.log("Cart:", selectTotal(store.getState()));
+console.log("\n");
+console.log("Products in Cart:", items);
+console.log("Total items:", totalItems);
+console.log("Sub total:", subTotal);
+console.log("Tax:", tax);
+console.log("Total:", total);
 
-store.dispatch(incrementQuantity({ productId: 2 })); // không có
-console.log("Cart:", selectTotal(store.getState()));
-
-store.dispatch(decrementQuantity({ productId: 2 })); // không có
-console.log("Cart:", selectTotal(store.getState()));
-
-store.dispatch(setQuantity({ productId: 1, quantity: 10 }));
-console.log("Cart:", selectTotal(store.getState()));
-
-store.dispatch(setQuantity({ productId: 2, quantity: 10 })); // không có
-console.log("Cart:", selectTotal(store.getState()));
-
-store.dispatch(clear());
-console.log("Cart:", selectTotal(store.getState()));
-
-// amazing
-store.hello();
-store.goodbye();
-
-// async
-// mặc định dispatch async thunk trả về một promise
-// kết quả nhận được là action, với type, payload
+// Async
+// Mặc định dispatch async thunk trả về một promise, kết quả nhận được là action, với type, payload
 store.dispatch(getTasks()).then((action) => console.log(action));
 
-// thunk cung cấp API unwrap() hoặc unwrapResult()
-// cho phép lấy về kết quả gốc của promise
-// câu lệnh fulfillWithValue(res.data) => nhận vào data
+// Thunk cung cấp API unwrap() hoặc unwrapResult() cho phép lấy về kết quả gốc của promise (bên trong createAsyncThunk, cụ thể là câu lệnh fulfillWithValue(res.data))
 store
     .dispatch(createTask({ userId: 10, title: "Hello" }))
     .unwrap()
     .then((data) => console.log(data))
     .catch((data) => console.log(data));
 
-// tương tự với unwrapResult
+// Tương tự với unwrapResult
 store
     .dispatch(createTask({ userId: 10, title: "Hello" }))
     .then(unwrapResult)
     .then((data) => console.log(data))
     .catch((data) => console.log(data));
+
+// Amazing
+console.log("\n");
+store.hello();
+store.goodbye();
