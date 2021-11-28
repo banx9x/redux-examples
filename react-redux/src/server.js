@@ -1,4 +1,4 @@
-import { createServer, Response, Model } from "miragejs";
+import { createServer, Model } from "miragejs";
 
 createServer({
     models: {
@@ -6,52 +6,32 @@ createServer({
     },
 
     seeds(server) {
-        server.create("todo", { title: "Learn Redux", completed: true });
-        server.create("todo", {
-            title: "Learn Redux Advance",
-            completed: false,
-        });
-        server.create("todo", { title: "Learn Redux Thunk", completed: false });
+        server.create("todo", { title: "Learn Redux" });
+        server.create("todo", { title: "Learn Redux Advance" });
+        server.create("todo", { title: "Learn Redux Thunk" });
     },
 
     routes() {
         this.namespace = "api";
+        this.timing = 1500;
 
-        this.get(
-            "/todos",
-            (schema, request) => {
-                return schema.todos.all();
-            },
-            { timing: 1500 }
-        );
+        this.get("/todos", (schema) => {
+            return schema.todos.all();
+        });
 
-        this.post(
-            "/todos",
-            (schema, request) => {
-                const { title } = JSON.parse(request.requestBody);
-                return schema.todos.create({ title, completed: false });
-            },
-            { timing: 1500 }
-        );
+        this.post("/todos", (schema, request) => {
+            const { title } = JSON.parse(request.requestBody);
+            return schema.todos.create({ title });
+        });
 
-        this.put(
-            "/todos/:id",
-            (schema, request) => {
-                const id = request.params.id;
+        this.delete("/todos", async (schema) => {
+            return;
+        });
 
-                return schema.todos.find(id).update({ completed: true });
-            },
-            { timing: 1500 }
-        );
+        this.delete("/todos/:id", (schema, request) => {
+            const id = request.params.id;
 
-        this.delete(
-            "/todos/:id",
-            (schema, request) => {
-                const id = request.params.id;
-
-                return schema.todos.find(id).destroy();
-            },
-            { timing: 1500 }
-        );
+            return schema.todos.find(id).destroy();
+        });
     },
 });

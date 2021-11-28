@@ -1,21 +1,31 @@
 import { useSelector } from "react-redux";
-import { selectTasks, selectStatus, selectError } from "./slices/todo.slice";
+import { selectTasks, selectStatus, selectError } from "../slices/todo.slice";
 import TodoItem from "./TodoItem";
+import styled from "styled-components";
 
-export default () => {
+const Ul = styled.ul`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 15px;
+`;
+
+const TodoList = () => {
     const status = useSelector(selectStatus);
     const error = useSelector(selectError);
     const tasks = useSelector(selectTasks);
 
-    if (status.loading) return <p>Loading...</p>;
+    if (status.loading || tasks.length == 0) return null;
 
     if (error) return <p>{error}</p>;
 
     return (
-        <ul>
+        <Ul>
             {tasks.map((task) => (
                 <TodoItem key={task.id} task={task} />
             ))}
-        </ul>
+        </Ul>
     );
 };
+
+export default TodoList;
