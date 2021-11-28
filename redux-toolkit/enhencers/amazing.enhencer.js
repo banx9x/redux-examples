@@ -1,4 +1,4 @@
-const lol = (createStore) => (reducer, enhencer) => {
+const amazing = (createStore) => (reducer, enhencer) => {
     const store = createStore(reducer, enhencer);
 
     store.hello = () => console.log("Hello Enhencer 😆");
@@ -7,4 +7,4 @@ const lol = (createStore) => (reducer, enhencer) => {
     return store;
 };
 
-export default lol;
+export default amazing;

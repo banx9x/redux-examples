@@ -8,7 +8,7 @@ import { getProductById } from "../db/product";
 // - name: tên slice, dùng làm prefix cho action được tạo tự động
 // - initialState: state mặc định
 // - reducers: là một object khai báo các reducer, với mỗi key là một function, actions được tạo tự động theo key
-// - extraReducers: là một builder callback, cho phép bổ sung thêm các action, thường là các action bên ngoài, và là promise
+// - extraReducers: là một builder callback, cho phép bổ sung thêm các action, là các action khai báo bên ngoài, và thường là promise (call API)
 const cartSlice = createSlice({
     name: "cart",
     initialState: [],
