@@ -11,18 +11,26 @@ import { getProductById } from "../db/product";
 // - extraReducers: là một builder callback, cho phép bổ sung thêm các action, là các action khai báo bên ngoài, và thường là promise (call API)
 const cartSlice = createSlice({
     name: "cart",
-    initialState: [],
+    initialState: localStorage.getItem("cart")
+        ? JSON.parse(localStorage.getItem("cart"))
+        : [],
     reducers: {
         // Reducer có thể là một hàm
         // Hoặc là một object, cho phép khai báo thêm prepare function như createAction
         addItem: {
             reducer(state, action) {
                 // Kiểm tra xem có item trong giỏ hàng hay chưa
-                const item = state.find((item) => item.pid == action.payload);
+                const item = state.find(
+                    (item) => item.product.id == action.payload
+                );
 
                 // Cho phép chỉnh sửa trực tiếp giá trị của state
                 if (item) item.qty++;
-                else state.push({ pid: action.payload, qty: 1 });
+                else
+                    state.push({
+                        product: getProductById(action.payload),
+                        qty: 1,
+                    });
             },
             // Prepare function nhận giá trị truyền vào khi dispatch action
             prepare(pid) {
@@ -36,27 +44,40 @@ const cartSlice = createSlice({
 
         removeItem(state, action) {
             // Hoặc return về state mới
-            return state.filter((item) => item.pid != action.payload);
+            return state.filter((item) => item.product.id != action.payload);
         },
 
         increment(state, action) {
-            const item = state.find((item) => item.pid == action.payload);
+            const item = state.find(
+                (item) => item.product.id == action.payload
+            );
 
             item.qty++;
         },
 
         decrement(state, action) {
-            const item = state.find((item) => item.pid == action.payload);
+            const item = state.find(
+                (item) => item.product.id == action.payload
+            );
 
             if (item.qty > 1) item.qty--;
         },
 
         incrementByAmount(state, action) {
-            const item = state.find((item) => item.pid == action.payload.pid);
+            const item = state.find(
+                (item) => item.product.id == action.payload.pid
+            );
 
             if (item) item.qty += action.payload.amount;
         },
     },
+    // Thêm một reducer bổ sung, tự động lưu giỏ hàng vào localStorage
+    extraReducers: (builder) =>
+        builder.addDefaultCase((state) => {
+            if (state.length > 0)
+                localStorage.setItem("cart", JSON.stringify(state));
+            else localStorage.removeItem("cart");
+        }),
 });
 
 // createSlice trả về một object với một vài thuộc tính
@@ -71,12 +92,7 @@ export const { addItem, removeItem, increment, decrement, incrementByAmount } =
 
 // createSelector là một tiện ích từ re-select cho phép tạo các bộ chọn phức tạp, được tích hợp mặc định vào redux toolkit tương tự redux-thunk
 // Tham khảo thêm: https://github.com/reduxjs/reselect
-export const selectItems = (state) =>
-    state.cart.map((item) => ({
-        ...item,
-        // Lấy thông tin chi tiết
-        product: getProductById(item.pid),
-    }));
+export const selectItems = (state) => state.cart;
 
 // createStore nhận vào một chuỗi hàm input và 1 hàm output
 // Các hàm input chạy lần lượt, hàm sau nhận giá trị trả về từ hàm trước đó
