@@ -66,7 +66,7 @@ const todoSlice = createSlice({
             })
             .addCase(getTasks.rejected, (state, action) => {
                 state.status = "failed";
-                state.error = action.payload;
+                state.error = action.error;
             })
             .addCase(createTask.pending, (state, action) => {
                 state.status = "loading";
@@ -77,7 +77,7 @@ const todoSlice = createSlice({
             })
             .addCase(createTask.rejected, (state, action) => {
                 state.status = "failed";
-                state.error = action.payload;
+                state.error = action.error;
             }),
 });
 

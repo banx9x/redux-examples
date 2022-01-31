@@ -57,7 +57,14 @@ console.log("Total:", total);
 
 // Async
 // Mặc định dispatch async thunk trả về một promise, kết quả nhận được là action, với type, payload
-store.dispatch(getTasks()).then((action) => console.log(action));
+// Có thể gọi abort() thông qua promise để cancel request
+let promise = store.dispatch(getTasks());
+promise.abort("Thích thì abort() thôi :)");
+
+promise = store.dispatch(getTasks());
+promise.then((action) => {
+    console.log("Success:", action);
+});
 
 // Thunk cung cấp API unwrap() hoặc unwrapResult() cho phép lấy về kết quả gốc của promise (bên trong createAsyncThunk, cụ thể là câu lệnh fulfillWithValue(res.data))
 store
